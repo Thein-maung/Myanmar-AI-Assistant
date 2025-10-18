@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မြန်မာစာ AI အကူ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #0084ff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .bot-message {
+            justify-content: flex-start;
+        }
+        
+        .bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid #ddd;
+            line-height: 1.4;
+        }
+        
+        .user-message .bubble {
+            background: #0084ff;
+            color: white;
+            border: none;
+        }
+        
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        #userInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1em;
+        }
+        
+        #sendBtn {
+            background: #0084ff;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-btn {
+            background: #0084ff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+        
+        .api-box {
+            background: #e3f2fd;
+            border-left: 4px solid #0084ff;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h1>🤖 မြန်မာစာ AI အကူ</h1>
+            <p>အဆင်ပြေစွာအသုံးပြုနိုင်ပါပြီ</p>
+        </div>
+        
+        <div class="messages" id="messages">
+            <div class="message bot-message">
+                <div class="bubble">
+                    <strong>မင်္ဂလာပါ! 👋</strong><br>
+                    ကျွန်တော်က မြန်မာစာပါ AI အကူပါ။
+                    
+                    <div class="quick-buttons">
+                        <button class="quick-btn" onclick="askQuestion('ရန်ကုန် ရာသီဥတု')">🌤️ ရာသီဥတု</button>
+                        <button class="quick-btn" onclick="askQuestion('ငွေလဲနှုန်း')">💱 ငွေလဲနှုန်း</button>
+                        <button class="quick-btn" onclick="askQuestion('သတင်းတွေပြောပါ')">📰 သတင်းများ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="စာရိုက်ရန်..." autocomplete="off">
+            <button id="sendBtn">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const messages = document.getElementById('messages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Functions
+        function askQuestion(question) {
+            userInput.value = question;
+            sendMessage();
+        }
+        
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // AI response after delay
+            setTimeout(function() {
+                const response = getAIResponse(message);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+        
+        function getAIResponse(input) {
+            input = input.toLowerCase();
+            
+            if (input.includes('ရာသီဥတု') || input.includes('weather')) {
+                return `<strong>🌤️ ရန်ကုန်မြို့ ရာသီဥတု</strong>
+                        <div class="api-box">
+                        အပူချိန်: <strong>32°C</strong><br>
+                        ရာသီဥတု: တိမ်အနည်းငယ်<br>
+                        စိုထိုင်းဆ: 75%
+                        </div>`;
+                        
+            } else if (input.includes('ငွေလဲ') || input.includes('exchange')) {
+                return `<strong>💱 လက်ရှိငွေလဲနှုန်းများ</strong>
+                        <div class="api-box">
+                        USD to MMK: <strong>2,100 ကျပ်</strong><br>
+                        USD to EUR: 0.92<br>
+                        USD to SGD: 1.35
+                        </div>`;
+                        
+            } else if (input.includes('သတင်း') || input.includes('news')) {
+                return `<strong>📰 နောက်ဆုံးရသတင်းများ</strong>
+                        <div class="api-box">
+                        • မြန်မာနိုင်ငံတွင် ဒစ်ဂျစ်တယ်စီးပွားရေး ကြီးထွား<br>
+                        • နည်းပညာတက္ကသိုလ်များ ဖွံ့ဖြိုးတိုးတက်<br>
+                        • AI နည်းပညာ စတင်အသုံးပြုလာ
+                        </div>`;
+                        
+            } else if (input.includes('ဟာသ') || input.includes('joke')) {
+                return `<strong>😄 ဟာသ</strong>
+                        <div class="api-box">
+                        "ဘာကြောင့် ကွန်ပျူတာတွေက ဘာသာစကားအသစ်တွေ သင်ရတာ ကြောက်တာလဲ?<br><br>
+                        <strong>ဘာလို့လဲဆိုတော့... သူတို့မှာ ဘာဂါ(bug)တွေ ရှိနေလို့ပါ!"</strong>
+                        </div>`;
+                        
+            } else if (input.includes('အချိန်') || input.includes('time')) {
+                const now = new Date();
+                const time = now.toLocaleTimeString('my-MM', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                return `<strong>⏰ မြန်မာစံတော်ချိန်</strong><br>${time}`;
+                
+            } else {
+                return `<strong>🤖 ကျေးဇူးပါ!</strong><br>
+                        ကျွန်တော်ကိုမေးခွန်းမေးတာအတွက်ကျေးဇူးတင်ပါတယ်။<br>
+                        ကျွန်တော်ကတော့ အခုအချိန်မှာ အဆင်ပြေပြေအလုပ်လုပ်နေပါပြီ! 🎉`;
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + sender + '-message';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = text;
+            
+            messageDiv.appendChild(bubble);
+            messages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        // Initialize
+        console.log('Myanmar AI Assistant started successfully!');
+    </script>
+</body>
+</html>

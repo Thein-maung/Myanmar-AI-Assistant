@@ -1,0 +1,19 @@
+{
+    "name": "မြန်မာစာ AI Chatbot",
+    "short_name": "MyanmarAI",
+    "description": "မြန်မာစာပါ AI Assistant - Weather, News, Exchange Rates, Calculator",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0084ff",
+    "theme_color": "#0084ff",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        }
+    ],
+    "categories": ["productivity", "utilities"],
+    "lang": "my"
+}
